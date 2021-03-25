@@ -1,167 +1,65 @@
-#First We import time for waiting, random for selecting the 3 numbers, and the 3 globals for use of other functions
-import time
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
 import random
-import sys
-global ca2
-global ca1
-global ca3
-global guesses
-global correctNumbers
-global correctOrder
-global ifa
-guesses = 0
+import time
 
+from typing import List
 
+def setup_game() -> List[int]:
+    """
+    Print a time-delayed set of instructions for this game and return 3 randomly]
+    generated numbers from 1 to 10 (inclusive).
+    """
+    instructions = [
+        "1. The Computer will select 3 numbers from 1 to 10, you must guess all 3 numbers in the right order.",
+        "2. Each time you guess, the computer will tell you how much numbers did you guess right, and tell you if those numbers were in the correct order.",
+        "3. There is no limit to how much guesses you can use.",
+        "4. You win by guessing all the correct numbers in the right order"
+    ]
 
+    print('=' * 60)
 
+    for line in instructions:
+        print(line)
+        time.sleep(1)
 
+    print('=' * 60)
 
+    return random.choices(range(1, 11), k=3)
 
+def check_number(unknown: int) -> bool:
+    """
+    Takes a random (to the user unknown) number as function parameter. The user
+    is prompted to enter a guess. If the user guesses correctly return True, else
+    return False.
+    """
+    guess = int(input(">>> "))
 
-def game2():
-
-
-
-
-    #entering numbers
-    correctNumbers = 0
-    ca1 = 0
-    ca2 = 0
-    ca3 = 0
-    numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    ca1 = random.choice(numbers)
-    ca2 = random.choice(numbers)
-    ca3 = random.choice(numbers)
-    ifa = [ca1, ca2, ca3]
-    correctOrder = 0
-    print(ifa)
-    input1 = input()
-    input2 = input()
-    input3 = input()
-    correctNumbers = 0
-    if input1 == ca1: #here we are testinf for input1 of all 3 numbers.
-        print("The First Number Is 100% Correct. Number and Order.")
-        correctNumbers += 1
-        correctOrder += 1
-    if input1 == ifa:
-        correctNumbers += 1
-    if input2 == ca2:  #over here we are doing the same thing but for 2
-        print("The Second number Is 100% Correct. Number and Order.")
-        correctOrder += 1
-        correctNumbers += 1
-    if input2 == ifa:
-        correctNumbers += 1
-    if input3 == ca3:  #same here, but for 3
-        print("The Third number Is 100% Correct. Number and Order.")
-        correctOrder += 1
-        correctNumbers += 1
-    if input3 == ifa:
-        correctNumbers += 1
-    if correctNumbers == 3:
-        win()
+    if guess > unknown:
+        print("You guessed too high!")
+        return False
+    elif guess < unknown:
+        print("You guessed to low!")
+        return False
     else:
-        lose()
-        guesses += 1
+        print("Your guess was correct!")
+        return True
 
-def game3():
-    print(ifa)
-    input1 = input(1)
-    input2 = input(2)
-    input3 = input(3)
-    correctNumbers = 0
-    if input1 == ca1: #here we are testinf for input1 of all 3 numbers.
-        print("The First Number Is 100% Correct. Number and Order.")
-        correctNumbers += 1
-        correctOrder += 1
-    if input1 == ifa:
-        correctNumbers += 1
-    if input2 == ca2:  #over here we are doing the same thing but for 2
-        print("The Second number Is 100% Correct. Number and Order.")
-        correctOrder += 1
-        correctNumbers += 1
-    if input2 == ifa:
-        correctNumbers += 1
-    if input3 == ca3:  #same here, but for 3
-        print("The Third number Is 100% Correct. Number and Order.")
-        correctOrder += 1
-        correctNumbers += 1
-    if input3 == ifa:
-        correctNumbers += 1
-    if correctNumbers == 3:
-        win()
-    else:
-        lose()
-        guesses += 1
+def start_game():
+    """
+    The main function of this game. For each number in nums_to_guess the user
+    enters a number. The result of this comparison goes in guess_results.
+    """
+    guess_results = []
+    nums_to_guess = setup_game()
+    
+    for num in nums_to_guess:
+        guess_results.append(check_number(num))
 
+    print("\nYou won!") if all(guess_results) else print("\nYou lost!")
 
-
-def lose():
-    print("You have ", "Numbers Correct")
-    print("And", "Numbers That are correct in order.")
-    game3()
-
-def win():
-    print("Congratulations!")
-    print("It took you", guesses, "guesses to Win.")
-    q2 = input()
-    if q2 == "yes":
-        startGame()
-
-
-def startLevel1():
-    #chooses the numbers
-    wait1sec()
-    numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    ca1 = random.choice(numbers)
-    ca2 = random.choice(numbers)
-    ca3 = random.choice(numbers)
-    game2()
-
-
-
-#The game starts here
-def startGame():
-    guesses = 0
-    print("Welecome To Mastermind!")
-    print("How To Play:")
-    wait1sec()
-    print("1. The Computer will select 3 numbers from 1 to 10, you must guess all 3 numbers in the right order.")
-    wait1sec()
-    print("2. Each time you guess, the computer will tell you how much numbers did you guess right, and tell you if those numbers were in the correct order.")
-    wait1sec()
-    print("3.There is no limit to how much guesses you can use.")
-    wait1sec()
-    print("You win by guessing all the correct numbers in the right order")
-    startLevel1()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def wait1sec():
-    time.sleep(1)
-
-startGame()
-
+# this section defines the entry point of your application
+if __name__ == '__main__':
+    start_game()
